@@ -189,36 +189,33 @@ The MB2 canal is present in **56.8% to 60.4%** of maxillary first molars. Failur
 *Figure 5: Hybrid YOLO + UNet fusion pipeline*
 
 </div>
+### Hybrid Fusion Model Pipeline
 
-nput CBCT Image
-↓
-┌──────────────────────────────────────┐
-│ Stage 1: YOLOv8n Localization │
-│ - Detect MB2 canal region │
-│ - Generate bounding box │
-│ - Confidence score calculation │
-└──────────────────────────────────────┘
-↓ (Bounding Box with 12% margin)
-┌──────────────────────────────────────┐
-│ Stage 2: ROI Extraction │
-│ - Crop image to ROI │
-│ - Preserve fine details │
-└──────────────────────────────────────┘
-↓
-┌──────────────────────────────────────┐
-│ Stage 3: UNet Segmentation │
-│ - TTA (Test Time Augmentation) │
-│ - Binary mask generation │
-└──────────────────────────────────────┘
-↓
-┌──────────────────────────────────────┐
-│ Stage 4: Weighted Fusion │
-│ - Combine with YOLO confidence │
-│ - Adaptive thresholding │
-│ - Reconstruct full-resolution │
-└──────────────────────────────────────┘
-↓
-Output Segmentation Mask
+```mermaid
+flowchart TD
+    A[Input CBCT Image] --> B[Stage 1: YOLOv8n Localization]
+    B --> C[Detect MB2 Canal Region]
+    C --> D[Generate Bounding Box]
+    D --> E[Confidence Score Calculation]
+    E --> F[Stage 2: ROI Extraction<br>Bounding Box with 12% margin]
+    F --> G[Crop Image to ROI]
+    G --> H[Preserve Fine Details]
+    H --> I[Stage 3: UNet Segmentation]
+    I --> J[Test Time Augmentation - TTA]
+    J --> K[Binary Mask Generation]
+    K --> L[Stage 4: Weighted Fusion]
+    L --> M[Combine with YOLO Confidence]
+    M --> N[Adaptive Thresholding]
+    N --> O[Reconstruct Full-Resolution]
+    O --> P[Output Segmentation Mask]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style P fill:#9f9,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+    style I fill:#bbf,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 
 ---
@@ -401,7 +398,6 @@ The hybrid approach maintains real-time inference capabilities while achieving h
 
 ### Prerequisites
 
-```bash
 # Python 3.9 or higher
 # CUDA-capable GPU recommended for training
 
@@ -425,7 +421,7 @@ cd mb2-canal-detection-cbct
 Install Dependencies
 bash
 pip install -r requirements.txt
-🚀 Usage
+###🚀 Usage
 1. Data Preparation
 bash
 # Convert LabelMe JSON to YOLO format and UNet masks
@@ -471,12 +467,9 @@ python evaluation/visualize.py \
 5. Compare with Expert Annotations
 bash
 # Compare model predictions with expert annotations
-python evaluation/compare_with_experts.py \
-    --model_results outputs/hybrid_run/ \
-    --expert_annotations data/expert_annotations/ \
-    --output_dir evaluation/expert_comparison/
-📁 Project Structure
-text
+ ## 📁 Project Structure
+
+```
 mb2-canal-detection-cbct/
 │
 ├── README.md                          # Documentation
@@ -511,54 +504,54 @@ mb2-canal-detection-cbct/
 │
 ├── models/
 │   ├── __init__.py
-│   ├── unet.py                       # Attention Residual UNet architecture
-│   ├── unet_blocks.py                # UNet building blocks
-│   ├── yolo.py                       # YOLOv8 configuration
-│   ├── yolo_config.yaml              # YOLO training config
-│   └── hybrid.py                     # Hybrid fusion pipeline
+│   ├── unet.py                        # Attention Residual UNet architecture
+│   ├── unet_blocks.py                 # UNet building blocks
+│   ├── yolo.py                        # YOLOv8 configuration
+│   ├── yolo_config.yaml               # YOLO training config
+│   └── hybrid.py                      # Hybrid fusion pipeline
 │
 ├── training/
 │   ├── __init__.py
-│   ├── 2_Training_unet2.py           # UNet training script
-│   ├── 2_Training_yolo.py            # YOLO training script
-│   └── 2_Training_hybrid.py          # Hybrid model training script
+│   ├── 2_Training_unet2.py            # UNet training script
+│   ├── 2_Training_yolo.py             # YOLO training script
+│   └── 2_Training_hybrid.py           # Hybrid model training script
 │
 ├── evaluation/
 │   ├── __init__.py
-│   ├── evaluate.py                   # Model evaluation script
-│   ├── visualize.py                  # Visualization utilities
-│   └── compare_with_experts.py       # Expert comparison script
+│   ├── evaluate.py                    # Model evaluation script
+│   ├── visualize.py                   # Visualization utilities
+│   └── compare_with_experts.py        # Expert comparison script
 │
 ├── configs/
-│   ├── unet_config.yaml              # UNet hyperparameters
-│   ├── yolo_config.yaml              # YOLO hyperparameters
-│   └── hybrid_config.yaml            # Hybrid model configuration
+│   ├── unet_config.yaml               # UNet hyperparameters
+│   ├── yolo_config.yaml               # YOLO hyperparameters
+│   └── hybrid_config.yaml             # Hybrid model configuration
 │
 ├── outputs/
 │   ├── unet_run/
-│   │   ├── unet_best.h5              # Best weights
-│   │   ├── unet_last.h5              # Last epoch weights
-│   │   ├── unet_metrics.xlsx         # Performance metrics
-│   │   ├── training_curves.png       # Training visualization
-│   │   └── checkpoints/              # Intermediate checkpoints
+│   │   ├── unet_best.h5               # Best weights
+│   │   ├── unet_last.h5               # Last epoch weights
+│   │   ├── unet_metrics.xlsx          # Performance metrics
+│   │   ├── training_curves.png        # Training visualization
+│   │   └── checkpoints/               # Intermediate checkpoints
 │   ├── yolo_run/
 │   │   ├── weights/
-│   │   │   ├── best.pt               # Best weights
-│   │   │   └── last.pt               # Last epoch weights
+│   │   │   ├── best.pt                # Best weights
+│   │   │   └── last.pt                # Last epoch weights
 │   │   ├── train/
-│   │   │   ├── results.png           # Training results
-│   │   │   └── results.csv           # Training metrics
+│   │   │   ├── results.png            # Training results
+│   │   │   └── results.csv            # Training metrics
 │   │   ├── val/
 │   │   │   ├── confusion_matrix.png
 │   │   │   └── PR_curve.png
-│   │   └── yolo_metrics.xlsx         # Performance metrics
+│   │   └── yolo_metrics.xlsx          # Performance metrics
 │   └── hybrid_run/
-│       ├── segmentation_masks/       # Predicted masks
-│       ├── overlays/                 # Overlay visualizations
-│       ├── hybrid_metrics.xlsx       # Performance metrics
-│       └── hybrid_results.png        # Summary visualization
+│       ├── segmentation_masks/        # Predicted masks
+│       ├── overlays/                  # Overlay visualizations
+│       ├── hybrid_metrics.xlsx        # Performance metrics
+│       └── hybrid_results.png         # Summary visualization
 │
-├── media/                             # Documentation images
+├── media/                              # Documentation images
 │   ├── pipeline_overview.png
 │   ├── data_pipeline.png
 │   ├── unet_architecture.png
@@ -578,25 +571,94 @@ mb2-canal-detection-cbct/
 │   ├── hybrid_result3.png
 │   └── cross_val.png
 │
-└── notebooks/                         # Jupyter notebooks for analysis
+└── notebooks/                          # Jupyter notebooks for analysis
     ├── 01_data_exploration.ipynb
     ├── 02_model_evaluation.ipynb
     └── 03_results_visualization.ipynb
-🔄 Training Callbacks
-UNet Training Callbacks
-Callback	Parameters	Purpose
-ModelCheckpoint	save_best_only=True, monitor=val_dice_metric	Save only best weights based on validation Dice
-ReduceLROnPlateau	factor=0.5, patience=5	Reduce LR by half if no improvement for 5 epochs
-EarlyStopping	patience=10, monitor=val_dice_metric	Stop training if no improvement for 10 epochs
-YOLO Training Callbacks
-Callback	Parameters	Purpose
-EarlyStopping	patience=20	Stop if mAP50-95 doesn't improve for 20 epochs
-ModelCheckpoint	save_best_only=True	Save best weights
-WandBLogger	project=mb2-detection	Log metrics to Weights & Biases
-📝 Conclusion
+```
+## 🔄 Training Callbacks
+
+### UNet Training Callbacks
+
+| Callback | Parameters | Purpose |
+|----------|------------|---------|
+| **ModelCheckpoint** | `save_best_only=True, monitor=val_dice_metric` | Save only best weights based on validation Dice |
+| **ReduceLROnPlateau** | `factor=0.5, patience=5` | Reduce LR by half if no improvement for 5 epochs |
+| **EarlyStopping** | `patience=10, monitor=val_dice_metric` | Stop training if no improvement for 10 epochs |
+
+### YOLO Training Callbacks
+
+| Callback | Parameters | Purpose |
+|----------|------------|---------|
+| **EarlyStopping** | `patience=20` | Stop if mAP50-95 doesn't improve for 20 epochs |
+| **ModelCheckpoint** | `save_best_only=True` | Save best weights |
+| **WandBLogger** | `project=mb2-detection` | Log metrics to Weights & Biases |
+
+## 📝 Conclusion
+
 This research successfully demonstrates that:
 
-✅ Key Achievements
+### ✅ Key Achievements
+
+| # | Achievement | Description |
+|---|-------------|-------------|
+| 1 | **Hybrid Approach** | Combining localization and segmentation outperforms single-model solutions |
+| 2 | **Superior Localization** | YOLOv8n identifies MB2 canals with **>94% accuracy** |
+| 3 | **Segmentation Enhancement** | Hybrid Fusion improves accuracy from 80.8% to **92.0%** |
+| 4 | **Statistical Significance** | All improvements are statistically significant (**P < 0.05**) |
+| 5 | **Robust Generalization** | 10-Fold cross-validation confirms model stability |
+
+### 🏥 Clinical Implications
+
+This framework can serve as a **clinical decision support system** to help endodontists:
+
+- ✅ Reduce missed canal detections
+- ✅ Improve treatment success rates
+- ✅ Decrease chair time
+- ✅ Enhance patient outcomes
+- ✅ Provide consistent, reproducible assessments
+
+### 🚀 Future Directions
+
+| Direction | Description |
+|-----------|-------------|
+| **Model Enhancement** | Explore Vision Transformers (ViT) and newer YOLO versions (v9, v10, v11) |
+| **Data Expansion** | Multi-center datasets with different CBCT devices and imaging protocols |
+| **Real-time Deployment** | Develop a clinical application with real-time inference capabilities |
+| **Extended Applications** | Apply to other dental structures (canals, periapical lesions, root fractures) |
+| **3D Integration** | Extend to full 3D segmentation using 3D UNet or other volumetric architectures |
+
+### ✅ Key Achievements
+
+| # | Achievement | Description |
+|---|-------------|-------------|
+| 1 | **Hybrid Approach** | Combining localization and segmentation outperforms single-model solutions |
+| 2 | **Superior Localization** | YOLOv8n identifies MB2 canals with **>94% accuracy** |
+| 3 | **Segmentation Enhancement** | Hybrid Fusion improves accuracy from 80.8% to **92.0%** |
+| 4 | **Statistical Significance** | All improvements are statistically significant (**P < 0.05**) |
+| 5 | **Robust Generalization** | 10-Fold cross-validation confirms model stability |
+
+### 🏥 Clinical Implications
+
+This framework can serve as a **clinical decision support system** to help endodontists:
+
+- ✅ Reduce missed canal detections
+- ✅ Improve treatment success rates
+- ✅ Decrease chair time
+- ✅ Enhance patient outcomes
+- ✅ Provide consistent, reproducible assessments
+
+### 🚀 Future Directions
+
+| Direction | Description |
+|-----------|-------------|
+| **Model Enhancement** | Explore Vision Transformers (ViT) and newer YOLO versions (v9, v10, v11) |
+| **Data Expansion** | Multi-center datasets with different CBCT devices and imaging protocols |
+| **Real-time Deployment** | Develop a clinical application with real-time inference capabilities |
+| **Extended Applications** | Apply to other dental structures (canals, periapical lesions, root fractures) |
+| **3D Integration** | Extend to full 3D segmentation using 3D UNet or other volumetric architectures |
+
+###✅ Key Achievements
 Hybrid approaches combining localization and segmentation outperform single-model solutions for complex anatomical structure detection.
 
 YOLOv8n provides excellent localization capabilities, identifying MB2 canals with >94% accuracy and enabling precise ROI extraction.
@@ -620,7 +682,7 @@ Enhance patient outcomes
 
 Provide consistent, reproducible assessments
 
-🚀 Future Directions
+###🚀 Future Directions
 Model Enhancement: Explore Vision Transformers (ViT) and newer YOLO versions (v9, v10, v11)
 
 Data Expansion: Multi-center datasets with different CBCT devices and imaging protocols
@@ -631,48 +693,47 @@ Extended Applications: Apply to other dental structures (other canals, periapica
 
 3D Integration: Extend to full 3D segmentation using 3D UNet or other volumetric architectures
 
-📚 References
-<details> <summary>Click to expand references</summary>
-Tabassum, S., & Khan, F. R. (2016). "Failure of endodontic treatment: The usual suspects." European Journal of Dentistry, 10(01), 144-147.
+ ## 📚 References
 
-Cleghorn, B. M., Christie, W. H., & Dong, C. C. S. (2006). "Root and root canal morphology of the human permanent maxillary first molar: a literature review." Journal of Endodontics, 32(9), 813-821.
+<details>
+<summary><b>Click to expand references (10 sources)</b></summary>
 
-Mansour, S., et al. (2025). "Two step approach for detecting and segmenting the second mesiobuccal canal of maxillary first molars on cone beam computed tomography (CBCT) images via artificial intelligence." BMC Oral Health, 25(1), 1404.
+1. Tabassum, S., & Khan, F. R. (2016). "Failure of endodontic treatment: The usual suspects." *European Journal of Dentistry*, 10(01), 144-147.
 
-Duman, Ş. B., et al. (2024). "Second mesiobuccal canal segmentation with YOLOv5 architecture using cone beam computed tomography images." Odontology, 112(2), 552-561.
+2. Cleghorn, B. M., Christie, W. H., & Dong, C. C. S. (2006). "Root and root canal morphology of the human permanent maxillary first molar: a literature review." *Journal of Endodontics*, 32(9), 813-821.
 
-Albitar, L., et al. (2022). "Artificial intelligence (AI) for detection and localization of unobturated second mesial buccal (MB2) canals in cone-beam computed tomography (CBCT)." Diagnostics, 12(12), 3214.
+3. Mansour, S., et al. (2025). "Two step approach for detecting and segmenting the second mesiobuccal canal of maxillary first molars on cone beam computed tomography (CBCT) images via artificial intelligence." *BMC Oral Health*, 25(1), 1404.
 
-Dashti, M., et al. (2025). "Use of artificial intelligence for detection of MB2 canals in maxillary first molars on CBCT: a systematic review and meta-analysis." BMC Oral Health, 25(1), 1860.
+4. Duman, Ş. B., et al. (2024). "Second mesiobuccal canal segmentation with YOLOv5 architecture using cone beam computed tomography images." *Odontology*, 112(2), 552-561.
 
-Lin, J., et al. (2026). "Deep learning-based detection of the second mesiobuccal canal in maxillary first molars using cone-beam computed tomography." BMC Oral Health.
+5. Albitar, L., et al. (2022). "Artificial intelligence (AI) for detection and localization of unobturated second mesial buccal (MB2) canals in cone-beam computed tomography (CBCT)." *Diagnostics*, 12(12), 3214.
 
-Shetty, S., et al. (2025). "Machine learning models in the detection of MB2 canal orifice in CBCT images." International Dental Journal, 75(3), 1640-1648.
+6. Dashti, M., et al. (2025). "Use of artificial intelligence for detection of MB2 canals in maxillary first molars on CBCT: a systematic review and meta-analysis." *BMC Oral Health*, 25(1), 1860.
 
-Ji, Y., et al. (2024). "Construction and evaluation of an AI-based CBCT resolution optimization technique for extracted teeth." Journal of Endodontics, 50(9), 1298-1306.
+7. Lin, J., et al. (2026). "Deep learning-based detection of the second mesiobuccal canal in maxillary first molars using cone-beam computed tomography." *BMC Oral Health*.
 
-Khademi, A., et al. (2022). "In vitro diagnostic accuracy and agreement of dental microscope and cone‐beam computed tomography in comparison with microcomputed tomography for detection of the second mesiobuccal canal of maxillary first molars." Scanning, 2022(1), 1493153.
+8. Shetty, S., et al. (2025). "Machine learning models in the detection of MB2 canal orifice in CBCT images." *International Dental Journal*, 75(3), 1640-1648.
+
+9. Ji, Y., et al. (2024). "Construction and evaluation of an AI-based CBCT resolution optimization technique for extracted teeth." *Journal of Endodontics*, 50(9), 1298-1306.
+
+10. Khademi, A., et al. (2022). "In vitro diagnostic accuracy and agreement of dental microscope and cone‑beam computed tomography in comparison with microcomputed tomography for detection of the second mesiobuccal canal of maxillary first molars." *Scanning*, 2022(1), 1493153.
 
 </details>
-👥 Team
-Role	              Name	                                      Affiliation
-Supervisor	        Dr. Mahsa Khademi	Islamic Azad University,   Tehran Medical Sciences Branch
-Advisor            	Dr. Ali Neyri Rad	Islamic Azad University,   Tehran Medical Sciences Branch
-Author	            Fatemeh Lenjani	Islamic Azad University,     Tehran Medical Sciences Branch
-Technical Advisor	  Dr. Hamed Aghapanah Roudsari,                Isfahan Cardiovascular Research Center, Cardiovascular Research Institute, Isfahan University of Medical Sciences, Isfahan, Iran
 
+## 👥 Team
 
+| Role | Name | Affiliation |
+|------|------|-------------|
+| **Supervisor** | Dr. Mahsa Khademi | Islamic Azad University, Tehran Medical Sciences Branch |
+| **Advisor** | Dr. Ali Neyri Rad | Islamic Azad University, Tehran Medical Sciences Branch |
+| **Author** | Fatemeh Lenjani | Islamic Azad University, Tehran Medical Sciences Branch |
+| **Technical Advisor** | Dr. Hamed Aghapanah Roudsari | Isfahan Cardiovascular Research Center, Cardiovascular Research Institute, Isfahan University of Medical Sciences, Isfahan, Iran |
 
+## 💬 Citation
 
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-Copyright © 2026 Fatemeh Lenjani
-
-💬 Citation
 If you use this work in your research, please cite:
 
-bibtex
+```bibtex
 @thesis{lenjani2026mb2,
   title={Evaluation of the Diagnostic Accuracy of Deep Learning-Based Artificial Intelligence in Detecting the Mesiobuccal Root Canal of the Maxillary First Molar with Dual-Color Visualization in Cone-Beam Computed Tomography (CBCT) Images},
   author={Lenjani, Fatemeh},
@@ -681,49 +742,23 @@ bibtex
   address={Tehran, Iran},
   note={DDS Thesis}
 }
-📊 Repository Badges
-Badge	Status	Link
-https://img.shields.io/github/stars/yourusername/mb2-canal-detection-cbct	⭐	[Add link]
-https://img.shields.io/github/forks/yourusername/mb2-canal-detection-cbct	🍴	[Add link]
-https://img.shields.io/github/issues/yourusername/mb2-canal-detection-cbct	🐛	[Add link]
-https://img.shields.io/github/issues-pr/yourusername/mb2-canal-detection-cbct	🔀	[Add link]
-https://img.shields.io/github/last-commit/yourusername/mb2-canal-detection-cbct	📅	[Add link]
-https://img.shields.io/github/languages/code-size/yourusername/mb2-canal-detection-cbct	📦	[Add link]
-https://img.shields.io/badge/DOI-10.5281/zenodo.xxxxxx-blue	📄	[Add link]
-<div align="center">
-🏛️ Islamic Azad University, Tehran Medical Sciences Branch
-Department of Oral and Maxillofacial Radiology
+```
+## 📊 Repository Badges
 
-https://img.shields.io/badge/License-MIT-yellow.svg
-https://img.shields.io/badge/Made%2520with-%E2%9D%A4%EF%B8%8F-red.svg
+| Badge | Status | Link |
+|-------|--------|------|
+| ![GitHub Stars](https://img.shields.io/github/stars/yourusername/mb2-canal-detection-cbct) | ⭐ | [Add link] |
+| ![GitHub Forks](https://img.shields.io/github/forks/yourusername/mb2-canal-detection-cbct) | 🍴 | [Add link] |
+| ![GitHub Issues](https://img.shields.io/github/issues/yourusername/mb2-canal-detection-cbct) | 🐛 | [Add link] |
+| ![GitHub Pull Requests](https://img.shields.io/github/issues-pr/yourusername/mb2-canal-detection-cbct) | 🔀 | [Add link] |
+| ![GitHub Last Commit](https://img.shields.io/github/last-commit/yourusername/mb2-canal-detection-cbct) | 📅 | [Add link] |
+| ![GitHub Code Size](https://img.shields.io/github/languages/code-size/yourusername/mb2-canal-detection-cbct) | 📦 | [Add link] |
+| ![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.xxxxxx-blue) | 📄 | [Add link] |
+
+
+
 
 ⭐ If you find this project useful, please consider giving it a star! ⭐
 
 Last Updated: June 2026
-
-</div> ```
-📥 Download Instructions
-You can download this README.md file in several ways:
-
-Option 1: Copy-Paste
-Select all the text above (from the first line to the last)
-
-Copy it (Ctrl+C / Cmd+C)
-
-Create a new file named README.md
-
-Paste the content (Ctrl+V / Cmd+V)
-
-Save the file
-
-Option 2: Direct Download
-Click the download button below or right-click on the link
-
-Save the file as README.md
-
-Option 3: Use the Code Block
-bash
-# Create the file using terminal
-cat > README.md << 'EOF'
  
-
