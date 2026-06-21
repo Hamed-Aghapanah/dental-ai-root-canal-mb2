@@ -54,7 +54,7 @@ The MB2 canal is present in **56.8% to 60.4%** of maxillary first molars. Failur
 
 <div align="center">
 
-![Pipeline Overview](media/pipeline_overview.png)
+![Pipeline Overview](pipeline_overview.png)
 
 *Figure 1: Overview of the proposed two-stage pipeline*
 
