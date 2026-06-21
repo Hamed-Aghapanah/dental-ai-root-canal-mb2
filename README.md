@@ -26,7 +26,7 @@
   - [Model Architectures](#model-architectures)
   - [Evaluation Metrics](#evaluation-metrics)
 - [📈 Results](#-results)
-  - [Model Performance Comparison](#model-performance-comparison)
+  - [Model Performance Comparison] 
   - [Confusion Matrices](#confusion-matrices)
   - [Training Curves](#training-curves)
   - [Visual Results](#visual-results)
@@ -263,7 +263,7 @@ flowchart TD
 
 <div align="center">
 
-![Performance Bar Chart](media/performance_bars.png)
+ 
 
 *Figure 8: Bar chart comparison of model performance metrics*
 
@@ -275,7 +275,7 @@ flowchart TD
 
 | **UNet Confusion Matrix** | **YOLO Confusion Matrix** |
 |:---:|:---:|
-| ![UNet CM](media/unet_cm.png) | ![YOLO CM](media/yolo_cm.png) |
+| ![UNet CM](unet_cm.png) | ![YOLO CM](yolo_cm.png) |
 
 *Figure 9: Confusion matrices for UNet (left) and YOLO (right)*
 
