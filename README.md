@@ -107,7 +107,7 @@ The MB2 canal is present in **56.8% to 60.4%** of maxillary first molars. Failur
 ### Preprocessing Steps
 
 1. **Noise Reduction** - Gaussian filtering to reduce image artifacts
-2. **Intensity Normalization** - Min-max scaling to [0, 1] range
+2. **Intensity Normalization** - Min-max scaling to [0, 1] rangeYOLOv8n architecture for canal localizatio
 3. **Resizing** - Uniform dimensions for model compatibility
 4. **Data Augmentation**:
    - Random horizontal flip (50%)
@@ -124,7 +124,7 @@ The MB2 canal is present in **56.8% to 60.4%** of maxillary first molars. Failur
 
 <div align="center">
 
-![YOLO Architecture](media/yolo_architecture.png)
+![YOLO Architecture](yolo_architecture.png)
 
 *Figure 3: YOLOv8n architecture for canal localization*
 
@@ -144,7 +144,7 @@ The MB2 canal is present in **56.8% to 60.4%** of maxillary first molars. Failur
 
 <div align="center">
 
-![UNet Architecture](media/unet_architecture.png)
+![UNet Architecture](unet_architecture.png)
 
 *Figure 4: Attention Residual UNet architecture*
 
@@ -184,7 +184,7 @@ The MB2 canal is present in **56.8% to 60.4%** of maxillary first molars. Failur
 
 <div align="center">
 
-![Hybrid Model](media/hybrid_architecture.png)
+![Hybrid Model](hybrid_architecture.png)
 
 *Figure 5: Hybrid YOLO + UNet fusion pipeline*
 
@@ -224,7 +224,7 @@ flowchart TD
 
 <div align="center">
 
-![Metrics](media/metrics_diagram.png)
+![Metrics](metrics_diagram.png)
 
 *Figure 6: Evaluation metrics used for model assessment*
 
@@ -289,7 +289,7 @@ Figure 5: Hybrid YOLO + UNet fusion pipeline
 
 | **UNet Training Progress** | **YOLO Training Progress** |
 |:---:|:---:|
-| ![UNet Loss](media/unet_loss.png) | ![YOLO Loss](media/yolo_loss.png) |
+| ![UNet Loss](unet_loss.png) | ![YOLO Loss](yolo_loss.png) |
 
 *Figure 10: Training loss and accuracy curves for UNet and YOLO*
 
@@ -299,7 +299,7 @@ Figure 5: Hybrid YOLO + UNet fusion pipeline
 
 <div align="center">
 
-![UNet LR](media/unet_lr.png)
+![UNet LR](unet_lr.png)
 
 *Figure 11: Learning rate schedule during UNet training*
 
@@ -311,7 +311,7 @@ Figure 5: Hybrid YOLO + UNet fusion pipeline
 
 <div align="center">
 
-![UNet Results](media/unet_results.png)
+![UNet Results](unet_results.png)
 
 *Figure 12: Sample UNet segmentation outputs (Ground truth in green, Prediction in red)*
 
@@ -321,9 +321,9 @@ Figure 5: Hybrid YOLO + UNet fusion pipeline
 
 <div align="center">
 
-![Hybrid Results 1](media/hybrid_result1.png)
-![Hybrid Results 2](media/hybrid_result2.png)
-![Hybrid Results 3](media/hybrid_result3.png)
+![Hybrid Results 1](hybrid_result1.png)
+![Hybrid Results 2](hybrid_result2.png)
+![Hybrid Results 3](hybrid_result3.png)
 
 *Figure 13: Hybrid model segmentation outputs showing accurate canal detection*
 
