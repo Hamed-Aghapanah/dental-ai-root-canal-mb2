@@ -348,10 +348,8 @@ Figure 5: Hybrid YOLO + UNet fusion pipeline
 
 <div align="center">
 
-![Cross Validation](media/cross_val.png)
-
-*Figure 14: 10-Fold cross-validation performance stability*
-
+ 
+ 
 </div>
 
 ### Statistical Analysis
